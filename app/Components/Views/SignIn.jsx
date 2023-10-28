@@ -45,6 +45,7 @@ const SignIn = ({ vis, onIn }) => {
                 color="bg-[#46B7F4]"
                 textSize="text-lg"
                 onClick={onIn}
+                hover="hover:cursor-pointer hover:opacity-75"
               />
             </form>
             <div className="mt-3">
@@ -52,6 +53,7 @@ const SignIn = ({ vis, onIn }) => {
                 text="Im a New User, Sign Up"
                 color="bg-[#46B7F4]"
                 textSize="text-sm"
+                hover="hover:cursor-pointer hover:opacity-75"
               />
             </div>
           </div>
