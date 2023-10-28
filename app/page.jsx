@@ -1,12 +1,26 @@
 "use client";
 import { useState } from "react";
-import { Btn, SignIn } from "./Components";
+import { Btn, SignIn, StartDest, WayPointModal } from "./Components";
+import Image from "next/image";
 
 export default function Home() {
   const [vis, setVis] = useState(1);
+  const [modalVis, setModalVis] = useState(0);
+  const [wp1, setWp1] = useState("");
+  const [wp2, setWp2] = useState("");
   const moveFwd = () => {
     setVis(vis + 1);
   };
+  const modalNext = () => {
+    setModalVis(modalVis + 1);
+  };
+  const modalSkip = () => {
+    setModalVis(modalVis + 2);
+  };
+  const modalBack = () => {
+    setModalVis(1);
+  };
+  console.log(`modal vis: ${modalVis}`);
   return (
     <main
       className="mainBg rounded-2xl border-2 border-solid border-black 
@@ -15,32 +29,14 @@ export default function Home() {
     grid grid-flow-row"
     >
       <SignIn vis={vis} onIn={moveFwd} />
-      {vis == 2 && (
-        <div>
-          <div
-            className="rounded-b-[30px] rounded-t-2xl border-[1.8px] border-solid border-black bg-[#ffffff] p-6
-  grid gap-3
-  self-start place-self-center"
-          >
-            <input
-              type="text"
-              placeholder="Start Point"
-              className="border-t-0 border-r-0 border-l-0 border-b-[1.8px] border-solid border-black 
-      pb-1 px-1 w-full
-      text-sm"
-            />
-            <div className="grid grid-flow-col gap-1">
-              <Btn text="WayPoint 1" color="bg-[#EAD032]" textSize="text-xl" />
-              <div>
-                <Btn
-                  text="WayPoint 2"
-                  color="bg-[#E85654]"
-                  textSize="text-xl"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      <StartDest vis={vis} wp1={wp1} wp2={wp2} setWp={modalNext} />
+      {modalVis > 0 && (
+        <WayPointModal
+          modalStep={modalVis}
+          incStep={modalNext}
+          incStep2={modalSkip}
+          decStep={modalBack}
+        />
       )}
     </main>
   );
