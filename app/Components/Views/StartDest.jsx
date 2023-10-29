@@ -1,11 +1,28 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import timeIcon from "@/assets/timeIcon.png";
 import { Btn } from "..";
 import { useStore } from "@/app/store";
+import GlobalApi from "@/app/Shared/GlobalApi";
 const StartDest = ({ vis, wp1, wp2, setWp }) => {
   const setStart = useStore((store) => store.setStart);
+  const startPoint = useStore((store) => store.startPoint);
   const setEnd = useStore((store) => store.setEnd);
+  const endPoint = useStore((store) => store.endPoint);
+
+  const [input, setInput] = useState("");
+  const [autoList, setAutoList] = useState([]);
+  const [autoVisS, setAutoVisS] = useState(false);
+  const [autoVisE, setAutoVisE] = useState(false);
+  useEffect(() => {
+    autoComplete();
+  });
+  const autoComplete = () => {
+    GlobalApi.autoComplete({ input }).then((resp) => {
+      setAutoList(resp.data.product.predictions);
+    });
+  };
   return (
     <>
       {" "}
@@ -19,8 +36,12 @@ self-start place-self-center"
             {/* origin */}
             <div className="flex gap-3">
               <input
+                onInput={() => {
+                  setAutoVisS(true);
+                }}
                 onChange={(e) => {
                   setStart(e.target.value);
+                  setInput(e.target.value);
                 }}
                 type="text"
                 placeholder="Start Point"
@@ -28,6 +49,7 @@ self-start place-self-center"
   pb-1 px-1 w-full
   self-end place-self-start
   text-md"
+                value={startPoint}
               />
               <Image
                 src={timeIcon}
@@ -36,6 +58,23 @@ self-start place-self-center"
                 className="self-start place-self-end"
                 alt="time"
               />
+              {autoVisS && (
+                <ul className="absolute bg-[#ffffff] mt-12 hover:cursor-pointer p-3 w-fit z-[60]">
+                  {autoList.map((item) => {
+                    return (
+                      <li
+                        className="hover:bg-[#eeeeee] px-2"
+                        onClick={() => {
+                          setStart(item.description);
+                          setAutoVisS(false);
+                        }}
+                      >
+                        {item.description.slice(0, 45)}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
             {/* way points */}
             <div className="grid grid-flow-col gap-1">
@@ -72,8 +111,12 @@ self-start place-self-center"
             {/* destination */}
             <div className="flex gap-3">
               <input
+                onInput={() => {
+                  setAutoVisE(true);
+                }}
                 onChange={(e) => {
                   setEnd(e.target.value);
+                  setInput(e.target.value);
                 }}
                 type="text"
                 placeholder="Destination"
@@ -81,6 +124,7 @@ self-start place-self-center"
   pb-1 px-1 w-full
   self-end place-self-start
   text-md"
+                value={endPoint}
               />
               <Image
                 src={timeIcon}
@@ -89,6 +133,23 @@ self-start place-self-center"
                 className="self-start place-self-end"
                 alt="time"
               />
+              {autoVisE && (
+                <ul className="absolute bg-[#ffffff] mt-12 hover:cursor-pointer p-3 w-fit z-[60]">
+                  {autoList.map((item) => {
+                    return (
+                      <li
+                        className="hover:bg-[#eeeeee] px-2"
+                        onClick={() => {
+                          setEnd(item.description);
+                          setAutoVisE(false);
+                        }}
+                      >
+                        {item.description.slice(0, 45)}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
             {/* generate btn */}
             <Btn

@@ -26,7 +26,7 @@ export default function Home() {
     });
     setStartPoint(userLocation);
   };
-  console.log(userLocation);
+  // console.log(userLocation);
 
   // MAP STYLE
   const mapContainerStyle = {
@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   // VISIBILITY
-  const [vis, setVis] = useState(1);
+  const [vis, setVis] = useState(2);
   const [modalVis, setModalVis] = useState(0);
   const [wp1, setWp1] = useState("");
   const [wp2, setWp2] = useState("");
@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <main
       className="mainBg rounded-2xl border-2 border-solid border-black 
-     w-fit h-fit min-h-[90%] 
+     w-fit h-fit min-h-[90%] max-h-[96%] 
     place-self-center self-center
     grid grid-flow-row"
     >

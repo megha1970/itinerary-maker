@@ -27,7 +27,7 @@ const store = (set) => ({
   wayPoint1: "",
   setWayPoint1: (wayPoint1) =>
     set((store) => ({ wayPoint1: wayPoint1 }), false, "setWayPoint"),
-  ndPoint: "",
+  endPoint: "",
   setEnd: (endPoint) =>
     set((store) => ({ endPoint: endPoint }), false, "setEnd"),
 

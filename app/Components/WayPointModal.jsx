@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Btn, PlacesList } from ".";
 import { useStore } from "../store";
+import GlobalApi from "../Shared/GlobalApi";
 
 const WayPointModal = ({
   modalStep,
@@ -9,13 +11,37 @@ const WayPointModal = ({
   decStep,
   removeModal,
 }) => {
+  const [input, setInput] = useState("");
+  const [autoVis, setAutoVis] = useState(false);
+  const [autoList, setAutoList] = useState([]);
+  const setWayPoint1 = useStore((store) => store.setWayPoint1);
+  const wayPoint1 = useStore((store) => store.wayPoint1);
   const types = useStore((store) => store.types.map((type) => type));
   const setType = useStore((store) => store.setType);
-  const setWayPoint1 = useStore((store) => store.setWayPoint1);
-
+  // const userLocation = useStore((store) => store.userLocation);
+  // console.log({ userLocations });
+  // const coordinate = { lat: -34.397, lng: 150.644 };
+  // useEffect(() => {
+  //   getAddress();
+  // }, []);
+  // const getAddress = () => {
+  //   GlobalApi.revGeocoding(`${userLocation.lat},${userLocation.lng}`).then(
+  //     (resp) => {
+  //       console.log(resp.data);
+  //     }
+  //   );
+  // };
+  useEffect(() => {
+    autoComplete();
+  });
+  const autoComplete = () => {
+    GlobalApi.autoComplete({ input }).then((resp) => {
+      setAutoList(resp.data.product.predictions);
+    });
+  };
   return (
     <>
-      <div className="self-center place-self-center backdrop-blur-md grid fixed shadow-2xl rounded-3xl">
+      <div className=" z-50 self-center place-self-center backdrop-blur-md grid fixed shadow-2xl rounded-3xl">
         <div
           className="bg-[#ffffff]
           self-center place-self-center
@@ -45,16 +71,40 @@ const WayPointModal = ({
           {modalStep == 2 && (
             <div className="grid gap-3">
               {/* WAY POINT */}
-              <input
-                onChange={(e) => {
-                  setWayPoint1(e.target.value);
-                }}
-                type="text"
-                placeholder="Enter Location"
-                className="border-t-0 border-r-0 border-l-0 border-b-[1.8px] border-solid border-black 
+              <div>
+                <input
+                  onInput={() => {
+                    setAutoVis(true);
+                  }}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    setWayPoint1(e.target.value);
+                  }}
+                  type="text"
+                  placeholder="Enter Location"
+                  className="border-t-0 border-r-0 border-l-0 border-b-[1.8px] border-solid border-black 
       pb-1 px-1 w-full
       text-sm"
-              />
+                  value={wayPoint1}
+                />
+                {autoVis && (
+                  <ul className="absolute bg-[#ffffff] hover:cursor-pointer p-3 w-fit z-[60]">
+                    {autoList.map((item) => {
+                      return (
+                        <li
+                          className="hover:bg-[#eeeeee] px-2"
+                          onClick={() => {
+                            setWayPoint1(item.description);
+                            setAutoVis(false);
+                          }}
+                        >
+                          {item.description.slice(0, 45)}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
               {/* PRICE */}
               <div
                 className="switch-field 
