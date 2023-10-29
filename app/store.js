@@ -1,6 +1,11 @@
 import { create } from "zustand";
 
 const store = (set) => ({
+  userLocation: "",
+  setUserLocation: (loc) =>
+    set((store) => ({
+      userLocation: loc,
+    })),
   userProfiles: [
     {
       name: "Taveesha Agarwal",

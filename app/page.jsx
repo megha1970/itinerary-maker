@@ -5,10 +5,14 @@ import Image from "next/image";
 import { UserLocationContext } from "./context/UserLocationContext";
 import GlobalApi from "./Shared/GlobalApi";
 import { useStore } from "./store";
+import GoogleMapsView from "./Components/GoogleMapsView";
 
 export default function Home() {
   // USER LOCATION
-  const [userLocation, setUserLocation] = useState([]);
+  // const [userLocation, setUserLocation] = useState([]);
+  const setUserLocation = useStore((store) => store.setUserLocation);
+  const userLocation = useStore((store) => store.userLocation);
+  const setStartPoint = useStore((store) => store.setStart);
   useEffect(() => {
     getUserLocation();
   }, []);
@@ -20,6 +24,7 @@ export default function Home() {
         lng: pos.coords.longitude,
       });
     });
+    setStartPoint(userLocation);
   };
   console.log(userLocation);
 
@@ -30,7 +35,7 @@ export default function Home() {
   };
 
   // VISIBILITY
-  const [vis, setVis] = useState(2); //XXX
+  const [vis, setVis] = useState(1);
   const [modalVis, setModalVis] = useState(0);
   const [wp1, setWp1] = useState("");
   const [wp2, setWp2] = useState("");
@@ -55,25 +60,24 @@ export default function Home() {
   console.log(`modal vis: ${modalVis}`);
 
   return (
-    <UserLocationContext.Provider value={{ userLocation, setUserLocation }}>
-      <main
-        className="mainBg rounded-2xl border-2 border-solid border-black 
+    <main
+      className="mainBg rounded-2xl border-2 border-solid border-black 
      w-fit h-fit min-h-[90%] 
     place-self-center self-center
     grid grid-flow-row"
-      >
-        <SignIn vis={vis} onIn={moveFwd} />
-        <StartDest vis={vis} wp1={wp1} wp2={wp2} setWp={modalNext} />
-        {modalVis > 0 && (
-          <WayPointModal
-            modalStep={modalVis}
-            incStep={modalNext}
-            incStep2={modalSkip}
-            decStep={modalBack}
-            removeModal={removeModal}
-          />
-        )}
-      </main>
-    </UserLocationContext.Provider>
+    >
+      <SignIn vis={vis} onIn={moveFwd} />
+      <StartDest vis={vis} wp1={wp1} wp2={wp2} setWp={modalNext} />
+      {modalVis > 0 && (
+        <WayPointModal
+          modalStep={modalVis}
+          incStep={modalNext}
+          incStep2={modalSkip}
+          decStep={modalBack}
+          removeModal={removeModal}
+        />
+      )}
+      <GoogleMapsView vis={vis} />
+    </main>
   );
 }
