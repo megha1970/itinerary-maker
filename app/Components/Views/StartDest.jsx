@@ -28,6 +28,7 @@ self-start place-self-center"
                 width={45}
                 height={45}
                 className="self-start place-self-end"
+                alt="time"
               />
             </div>
             {/* way points */}
@@ -77,6 +78,7 @@ self-start place-self-center"
                 width={45}
                 height={45}
                 className="self-start place-self-end"
+                alt="time"
               />
             </div>
             {/* generate btn */}
