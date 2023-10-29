@@ -6,6 +6,7 @@ import { UserLocationContext } from "./context/UserLocationContext";
 import GlobalApi from "./Shared/GlobalApi";
 import { useStore } from "./store";
 import GoogleMapsView from "./Components/GoogleMapsView";
+import Itin from "./Components/Itin";
 
 export default function Home() {
   // USER LOCATION
@@ -18,7 +19,7 @@ export default function Home() {
   }, []);
   const getUserLocation = () => {
     navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
+      // console.log(pos);
       setUserLocation({
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
@@ -35,7 +36,7 @@ export default function Home() {
   };
 
   // VISIBILITY
-  const [vis, setVis] = useState(2);
+  const [vis, setVis] = useState(1);
   const [modalVis, setModalVis] = useState(0);
   const [wp1, setWp1] = useState("");
   const [wp2, setWp2] = useState("");
@@ -67,7 +68,13 @@ export default function Home() {
     grid grid-flow-row"
     >
       <SignIn vis={vis} onIn={moveFwd} />
-      <StartDest vis={vis} wp1={wp1} wp2={wp2} setWp={modalNext} />
+      <StartDest
+        vis={vis}
+        wp1={wp1}
+        wp2={wp2}
+        setWp={modalNext}
+        moveFwd={moveFwd}
+      />
       {modalVis > 0 && (
         <WayPointModal
           modalStep={modalVis}
@@ -78,6 +85,7 @@ export default function Home() {
         />
       )}
       <GoogleMapsView vis={vis} />
+      <Itin vis={vis} />
     </main>
   );
 }

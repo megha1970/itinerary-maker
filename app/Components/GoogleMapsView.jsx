@@ -5,11 +5,13 @@ import { useStore } from "../store";
 const GoogleMapsView = ({ vis }) => {
   const userLocation = useStore((store) => store.userLocation);
   const startPoint = useStore((store) => store.startPoint);
+
   const mapContainerStyle = {
     width: "100%",
     height: "60vh",
   };
   const coordinate = { lat: -34.397, lng: 150.644 };
+
   return (
     <div>
       {vis == 2 && (
@@ -26,16 +28,6 @@ const GoogleMapsView = ({ vis }) => {
             >
               <MarkerF
                 position={userLocation}
-                // icon={{
-                //   url: "/logo.svg",
-                //   scaledSize: {
-                //     width: 45,
-                //     height: 45,
-                //   },
-                // }}
-              />
-              <MarkerF
-                position={coordinate}
                 // icon={{
                 //   url: "/logo.svg",
                 //   scaledSize: {

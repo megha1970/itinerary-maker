@@ -5,11 +5,12 @@ import timeIcon from "@/assets/timeIcon.png";
 import { Btn } from "..";
 import { useStore } from "@/app/store";
 import GlobalApi from "@/app/Shared/GlobalApi";
-const StartDest = ({ vis, wp1, wp2, setWp }) => {
+const StartDest = ({ vis, wp1, wp2, setWp, moveFwd }) => {
   const setStart = useStore((store) => store.setStart);
   const startPoint = useStore((store) => store.startPoint);
   const setEnd = useStore((store) => store.setEnd);
   const endPoint = useStore((store) => store.endPoint);
+  const wayPoint1 = useStore((store) => store.wayPoint1);
 
   const [input, setInput] = useState("");
   const [autoList, setAutoList] = useState([]);
@@ -17,7 +18,7 @@ const StartDest = ({ vis, wp1, wp2, setWp }) => {
   const [autoVisE, setAutoVisE] = useState(false);
   useEffect(() => {
     autoComplete();
-  });
+  }, [input]);
   const autoComplete = () => {
     GlobalApi.autoComplete({ input }).then((resp) => {
       setAutoList(resp.data.product.predictions);
@@ -79,13 +80,24 @@ self-start place-self-center"
             {/* way points */}
             <div className="grid grid-flow-col gap-1">
               {/* waypoint1 */}
-              <Btn
-                text="WayPoint 1"
-                color="bg-[#EAD032]"
-                textSize="text-xl"
-                hover="hover:cursor-pointer hover:opacity-75"
-                onClick={setWp}
-              />
+              {!wayPoint1 && (
+                <Btn
+                  text="WayPoint 1"
+                  color="bg-[#EAD032]"
+                  textSize="text-xl"
+                  hover="hover:cursor-pointer hover:opacity-75"
+                  onClick={setWp}
+                />
+              )}
+              {wayPoint1 && (
+                <Btn
+                  text={wayPoint1.slice(0, 21)}
+                  color="bg-[#EAD032]"
+                  textSize="text-xl"
+                  hover="hover:cursor-pointer hover:opacity-75"
+                  onClick={setWp}
+                />
+              )}
               {/* waypoint2 */}
               {wp1 && (
                 <div>
@@ -157,6 +169,7 @@ self-start place-self-center"
               color="bg-[#70B570]"
               textSize="text-sm"
               hover="hover:cursor-pointer hover:opacity-75"
+              onClick={moveFwd}
             />
           </div>
         </div>
