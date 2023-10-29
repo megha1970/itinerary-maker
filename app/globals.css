@@ -13,3 +13,51 @@
   background: url(../assets/mainBg.png);
   background-position: center;
 }
+
+/* PRICE SWITCH */
+.switch-field {
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field :nth-child(2) {
+  background-color: #ead032;
+}
+.switch-field :nth-child(4) {
+  background-color: #e85654;
+}
+.switch-field :nth-child(6) {
+  background-color: #70b570;
+}
+
+.switch-field label {
+  border-radius: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 21px;
+  line-height: 1;
+  text-align: center;
+  padding: 6px 18px;
+  border: #000000 solid 1.5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  border: #000000 solid 2.7px;
+
+  box-shadow: none;
+}

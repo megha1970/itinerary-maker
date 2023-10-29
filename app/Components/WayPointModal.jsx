@@ -1,10 +1,21 @@
 import React from "react";
-import { Btn } from ".";
+import { Btn, PlacesList } from ".";
+import { useStore } from "../store";
 
-const WayPointModal = ({ modalStep, incStep, incStep2, decStep }) => {
+const WayPointModal = ({
+  modalStep,
+  incStep,
+  incStep2,
+  decStep,
+  removeModal,
+}) => {
+  const types = useStore((store) => store.types.map((type) => type));
+  const setType = useStore((store) => store.setType);
+  const setWayPoint1 = useStore((store) => store.setWayPoint1);
+
   return (
     <>
-      <div className="bg-[#21212198] self-center place-self-center backdrop-blur-md grid fixed">
+      <div className="self-center place-self-center backdrop-blur-md grid fixed shadow-2xl rounded-3xl">
         <div
           className="bg-[#ffffff]
           self-center place-self-center
@@ -32,18 +43,53 @@ const WayPointModal = ({ modalStep, incStep, incStep2, decStep }) => {
           )}
           {/* i knwo where to go */}
           {modalStep == 2 && (
-            <div>
+            <div className="grid gap-3">
+              {/* WAY POINT */}
               <input
+                onChange={(e) => {
+                  setWayPoint1(e.target.value);
+                }}
                 type="text"
                 placeholder="Enter Location"
                 className="border-t-0 border-r-0 border-l-0 border-b-[1.8px] border-solid border-black 
       pb-1 px-1 w-full
       text-sm"
               />
-              <input type="radio" name="" id="" />
+              {/* PRICE */}
+              <div
+                className="switch-field 
+              self-center place-self-center"
+              >
+                <input
+                  type="radio"
+                  id="radio-three"
+                  name="switch-two"
+                  value="yes"
+                  className="bg-[#EAD032]"
+                />
+                <label for="radio-three">₹</label>
+                <input
+                  type="radio"
+                  id="radio-four"
+                  name="switch-two"
+                  value="maybe"
+                />
+                <label for="radio-four">₹₹</label>
+                <input
+                  type="radio"
+                  id="radio-five"
+                  name="switch-two"
+                  value="no"
+                />
+                <label for="radio-five">₹₹₹</label>
+              </div>
 
-              <input type="datetime" name="" id="" />
-              <div className="grid grid-flow-col justify-between">
+              {/* <input type="datetime" name="" id="" /> */}
+              {/* BACK CONTI */}
+              <div
+                className="grid grid-flow-col gap-6 justify-between
+              mt-6"
+              >
                 <Btn
                   text="Back"
                   color="bg-[#46B7F4]"
@@ -55,7 +101,7 @@ const WayPointModal = ({ modalStep, incStep, incStep2, decStep }) => {
                   text="Continue"
                   color="bg-[#46B7F4]"
                   textSize="text-sm"
-                  onClick={incStep}
+                  onClick={removeModal}
                   hover="hover:cursor-pointer hover:opacity-75"
                 />
               </div>
@@ -63,18 +109,60 @@ const WayPointModal = ({ modalStep, incStep, incStep2, decStep }) => {
           )}
           {/* suggest pls */}
           {modalStep == 3 && (
-            <div>
-              <input
+            <div className="grid gap-3">
+              {/* <input
                 type="text"
                 placeholder="Choose Location"
                 className="border-t-0 border-r-0 border-l-0 border-b-[1.8px] border-solid border-black 
       pb-1 px-1 w-full
       text-sm"
-              />
-              <input type="radio" name="" id="" />
-
-              <input type="datetime" name="" id="" />
-              <div className="grid grid-flow-col justify-between">
+              /> */}
+              <select
+                name="types"
+                id="types"
+                placeholder="Choose Activity/Location"
+                onChange={(e) => {
+                  setType(e.target.value);
+                }}
+              >
+                {types.map((type) => {
+                  return <option value={type}>{type}</option>;
+                })}
+              </select>
+              {/* PRICE */}
+              <div
+                className="switch-field 
+              self-center place-self-center"
+              >
+                <input
+                  type="radio"
+                  id="radio-three"
+                  name="switch-two"
+                  value="yes"
+                  className="bg-[#EAD032]"
+                />
+                <label for="radio-three">₹</label>
+                <input
+                  type="radio"
+                  id="radio-four"
+                  name="switch-two"
+                  value="maybe"
+                />
+                <label for="radio-four">₹₹</label>
+                <input
+                  type="radio"
+                  id="radio-five"
+                  name="switch-two"
+                  value="no"
+                />
+                <label for="radio-five">₹₹₹</label>
+              </div>
+              {/* <input type="datetime" name="" id="" /> */}
+              {/* BACK CONTI */}
+              <div
+                className="grid grid-flow-col gap-6 justify-between
+              mt-6"
+              >
                 <Btn
                   text="Back"
                   color="bg-[#46B7F4]"
@@ -92,6 +180,7 @@ const WayPointModal = ({ modalStep, incStep, incStep2, decStep }) => {
               </div>
             </div>
           )}
+          {modalStep == 4 && <PlacesList />}
         </div>
       </div>
     </>

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Btn, SignIn, StartDest, WayPointModal } from "./Components";
 import Image from "next/image";
 import { UserLocationContext } from "./context/UserLocationContext";
+import GlobalApi from "./Shared/GlobalApi";
+import { useStore } from "./store";
 
 export default function Home() {
   // USER LOCATION
@@ -28,7 +30,7 @@ export default function Home() {
   };
 
   // VISIBILITY
-  const [vis, setVis] = useState(1);
+  const [vis, setVis] = useState(2); //XXX
   const [modalVis, setModalVis] = useState(0);
   const [wp1, setWp1] = useState("");
   const [wp2, setWp2] = useState("");
@@ -37,6 +39,7 @@ export default function Home() {
   };
   const modalNext = () => {
     setModalVis(modalVis + 1);
+    setVis(9);
   };
   const modalSkip = () => {
     setModalVis(modalVis + 2);
@@ -44,6 +47,11 @@ export default function Home() {
   const modalBack = () => {
     setModalVis(1);
   };
+  const removeModal = () => {
+    setModalVis(0);
+    setVis(2);
+  };
+
   console.log(`modal vis: ${modalVis}`);
 
   return (
@@ -62,6 +70,7 @@ export default function Home() {
             incStep={modalNext}
             incStep2={modalSkip}
             decStep={modalBack}
+            removeModal={removeModal}
           />
         )}
       </main>
