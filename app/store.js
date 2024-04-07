@@ -8,8 +8,8 @@ const store = (set) => ({
     })),
   userProfiles: [
     {
-      name: "Taveesha Agarwal",
-      email: "taveesha.agarwal@gmail.com",
+      name: "Megha Vasandani",
+      email: "meghavasandani@gmail.com",
       password: "123test",
     },
   ],
